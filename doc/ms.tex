@@ -1,5 +1,5 @@
 % Every Latex document starts with a documentclass command
-\documentclass[a4paper, 11pt]{article}
+\documentclass[a4paper, 10pt]{article}
 
 % Load some packages
 \usepackage{graphicx} % This allows you to put figures in
@@ -26,7 +26,19 @@
 %\abstract{This is the abstract}
 
 The unknowns are the sine and cosine amplitudes $A$ and $B$ respectively,
-and the frequency $\nu$. The data are the measurements
+and the frequency $\nu$. I.e. the time variations are of the form
+
+\begin{eqnarray}
+m(t) &=& A\sin(2\pi\nu t) + B\cos(2\pi\nu t)\label{eq:sinusoids}
+\end{eqnarray}
+
+The following derivation follows those by Larry Bretthorst. Writing
+Equation~\ref{eq:sinusoids} in the more general form:
+\begin{eqnarray}
+m(t) &=& \sum_{j=1}^N A_j f_j(t; \nu)\label{eq:sinusoids}
+\end{eqnarray}
+
+The data are the measurements
 $\mathbf{y} = \{y_i\}_{i=1}^n$.
 The likelihood is
 \begin{eqnarray}
@@ -35,9 +47,29 @@ p(\mathbf{y} | A, B, \nu)
 \prod_{i=1}^{n} \frac{1}{\sigma_i \sqrt{2\pi}}
 \exp\left\{
 -\frac{1}{2\sigma_i^2}
-\left[y_i - A\sin(2\pi\nu t_i) - B\cos(2\pi\nu t_i)\right]^2
+\left[y_i - \sum_{j=1}^N A_j f_j(t_i; \nu))\right]^2
+\right\}
+\\
+&\propto&
+\exp\left\{
+-\frac{1}{2}\sum_{i=1}^n
+\left(
+\frac{y_i^2}{\sigma_i^2} - 2\frac{y_i \sum_{j=1}^N A_j f_j(t_i; \nu)}{\sigma_i^2}
++ \left(\sum_{j=1}^N A_j f_j(t_i; \nu)\right)^2
+\right)
+\right\}\nonumber\\
+&\propto&
+\exp\left\{
+(\mathbf{A}\cdot\mathbf{f})
+ -\frac{1}{2} \mathbf{A^T}\mathbf{g}\mathbf{A}
 \right\}
 \end{eqnarray}
+
+Where $\mathbf{f}$ is a vector of the dot products of the model functions
+(sine, cosine) with the data, and $\mathbf{g}$ is the matrix of cross products
+of the model functions with themselves. All dot products are taken with
+by summing over $i$, and with respect to $1/\sigma_i^2$ weights.
+
 
 \end{document}
 
