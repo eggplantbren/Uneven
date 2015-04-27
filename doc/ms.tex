@@ -28,6 +28,7 @@
 
 %\abstract{This is the abstract}
 
+\section{Inference}
 The unknowns are the sine and cosine amplitudes $A$ and $B$ respectively,
 and the frequency $\nu$. I.e. the time variations are of the form
 
@@ -81,6 +82,7 @@ p(\nu | \mathbf{y}) &\propto& p(\nu)p(\mathbf{y} | \nu)\\
 where the integral is the marginal likelihood for $\nu$. Assuming
 iid $\mathcal{N}(0, \delta^2)$ priors for the amplitudes (independently of
 the nonlinear parameters) we get
+*********NOTE: WRONGNESS FOLLOWS**********
 \begin{eqnarray}
 p(\mathbf{y} | \nu)
 &\propto& \int\exp\left\{
@@ -94,8 +96,15 @@ p(\mathbf{y} | \nu)
  -\frac{1}{2} \mathbf{A}^T\left(\mathbf{g} + \frac{1}{\delta^2}\mathbf{I}\right)\mathbf{A}
 \right\} d^N\mathbf{A}\nonumber\\
 &\propto&
-\sqrt{\det\left[\mathbf{g} + \frac{1}{\delta^2}\mathbf{I}\right]}.
+\sqrt{\det\left[\mathbf{g} + \frac{1}{\delta^2}\mathbf{I}\right]}.\label{eq:marginal_likelihood}
 \end{eqnarray}
+
+\section{Information Theory}
+We want to quantify the degree to which $\mathbf{y}$ provides information about
+$\nu$. This is the mutual information, which is the expected Kullback-Leibler
+divergence from the prior $p(\nu)$ to the posterior $p(\nu | \mathbf{y})$.
+Since we have the marginal likelihood $p(\mathbf{y} | \nu)$ in
+Equation~\ref{eq:marginal_likelihood}
 
 
 \end{document}
