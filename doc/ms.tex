@@ -6,6 +6,9 @@
 \usepackage{natbib}   % This allows for relatively pain-free reference lists
 \usepackage[left=3cm,top=3cm,right=3cm]{geometry} % The way I like the margins
 \usepackage{dsfont}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
 
 % This helps with figure placement
 \renewcommand{\topfraction}{0.85}
@@ -60,8 +63,8 @@ p(\mathbf{y} | A, B, \nu)
 \right\}\nonumber\\
 &\propto&
 \exp\left\{
-(\mathbf{A}\cdot\mathbf{f})
- -\frac{1}{2} \mathbf{A^T}\mathbf{g}\mathbf{A}
+\mathbf{A}^T\mathbf{f}
+ -\frac{1}{2} \mathbf{A}^T\mathbf{g}\mathbf{A}
 \right\}
 \end{eqnarray}
 
@@ -69,6 +72,30 @@ Where $\mathbf{f}$ is a vector of the dot products of the model functions
 (sine, cosine) with the data, and $\mathbf{g}$ is the matrix of cross products
 of the model functions with themselves. All dot products are taken with
 by summing over $i$, and with respect to $1/\sigma_i^2$ weights.
+
+Ultimately we want the marginal posterior for $\nu$:
+\begin{eqnarray}
+p(\nu | \mathbf{y}) &\propto& p(\nu)p(\mathbf{y} | \nu)\\
+&=& p(\nu)\int p(\mathbf{A}|\nu)p(\mathbf{y} | \mathbf{A}, \nu) d^N\mathbf{A}
+\end{eqnarray}
+where the integral is the marginal likelihood for $\nu$. Assuming
+iid $\mathcal{N}(0, \delta^2)$ priors for the amplitudes (independently of
+the nonlinear parameters) we get
+\begin{eqnarray}
+p(\mathbf{y} | \nu)
+&\propto& \int\exp\left\{
+ -\frac{1}{2\delta^2} \mathbf{A}^T\mathbf{A}
+ +\mathbf{A}^T\mathbf{f}
+ -\frac{1}{2} \mathbf{A}^T\mathbf{g}\mathbf{A}
+\right\} d^N\mathbf{A}\nonumber\\
+&=&
+\int\exp\left\{
+\mathbf{A}^T\mathbf{f}
+ -\frac{1}{2} \mathbf{A}^T\left(\mathbf{g} + \frac{1}{\delta^2}\mathbf{I}\right)\mathbf{A}
+\right\} d^N\mathbf{A}\nonumber\\
+&\propto&
+\frac{1}{\sqrt{\det\left[\mathbf{g} + \frac{1}{\delta^2}\mathbf{I}\right]}}.
+\end{eqnarray}
 
 
 \end{document}
