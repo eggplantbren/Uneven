@@ -71,7 +71,8 @@ p(\mathbf{y} | A, B, \nu)
 
 Where $\mathbf{f}$ is a vector of the dot products of the model functions
 (sine, cosine) with the data, and $\mathbf{g}$ is the matrix of cross products
-of the model functions with themselves. All dot products are taken with
+of the model functions with themselves. These dot products
+(the ones making up $\mathbf{f}$ and $\mathbf{g}$) are taken
 by summing over $i$, and with respect to $1/\sigma_i^2$ weights.
 
 Ultimately we want the marginal posterior for $\nu$:
