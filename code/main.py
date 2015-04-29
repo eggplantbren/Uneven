@@ -33,10 +33,39 @@ def generate(t):
 
 
 if __name__ == '__main__':
-
+  # Timestamps: uniform strategy
   t = np.linspace(t_min, t_max, N)
-  A, B, nu, y = generate(t)
+
+  # Timestamps: random strategy
+  #t = t_min + (t_max - t_min)*np.rand(N)
+
+  # Generate parameters and data
+  A, B, nu_true, y = generate(t)
 
   plt.plot(t, y, 'bo')
   plt.show()
+
+  # Calculate the marginal posterior for nu
+  nu = np.exp(np.linspace(np.log(nu_min), np.log(nu_max), 10001))
+
+  for i in xrange(0, len(nu)):
+    # Model basis functions
+    S = np.sin(2.*np.pi*nu[i]*t)
+    C = np.cos(2.*np.pi*nu[i]*t)
+
+    f = np.zeros(2)
+    g = np.zeros((2, 2))
+    f[0] = (S*y).sum()
+    f[1] = (C*y).sum()
+
+    g[0, 0] = (S*S).sum()
+    g[0, 1] = (S*C).sum()
+    g[1, 0] = g[0, 1]
+    g[1, 1] = (C*C).sum()
+
+    f = np.matrix(f).T
+    g = np.matrix(g)
+
+    L = np.cholesky(g + np.eye(2)/delta**2) 
+
 
