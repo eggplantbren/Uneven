@@ -33,7 +33,12 @@ def generate(t):
 
 
 
-if __name__ == '__main__':
+def compute_H():
+  """
+  Simulate one (parameters, data) pair and calculate the information
+  obtained about log_nu.
+  """
+
   # Timestamps: uniform strategy
   t = np.linspace(t_min, t_max, N)
 
@@ -83,4 +88,17 @@ if __name__ == '__main__':
   plt.axvline(np.log(nu_true), color='r')
   plt.title('H = ' + str(H))
   plt.show()
+
+  return H
+
+if __name__ == '__main__':
+  # Monte Carlo estimate expected information (= mutual information)
+  reps = 1000
+  results = np.empty(reps)
+
+  for i in xrange(0, reps):
+    results[i] = compute_H()
+
+    keep = results[0:(i+1)]
+    print((i+1), keep.mean(), keep.std()/np.sqrt(i+1.))
 
