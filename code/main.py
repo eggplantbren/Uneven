@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import scipy.linalg as la
 
 # Number of data points
-N = 11
+N = 101
 
 # Standard deviation of measurement noise
 sigma = np.ones(N)
@@ -18,7 +18,7 @@ t_max = 100.
 
 # Limits for prior on frequency
 nu_min = 1./(t_max - t_min)
-nu_max = 1E2*nu_min
+nu_max = nu_min*(0.5*N)
 
 def generate(t):
   """
@@ -47,7 +47,8 @@ if __name__ == '__main__':
   plt.show()
 
   # Calculate the marginal posterior for nu
-  nu = np.exp(np.linspace(np.log(nu_min), np.log(nu_max), 10001))
+  log_nu = np.linspace(np.log(nu_min), np.log(nu_max), 30001)
+  nu = np.exp(log_nu)
   logp = np.zeros(nu.size)
 
   for i in xrange(0, len(nu)):
@@ -69,7 +70,7 @@ if __name__ == '__main__':
     cho = la.cho_factor(g2) 
     logp[i] = 0.5*np.dot(f, la.cho_solve(cho, f)) - np.sum(np.log(np.diag(cho[0])))
 
-  plt.plot(nu, np.exp(logp - logp.max()))
-  plt.title(nu_true)
+  plt.plot(log_nu, np.exp(logp - logp.max()))
+  plt.axvline(np.log(nu_true), color='r')
   plt.show()
 
