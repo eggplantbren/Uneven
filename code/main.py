@@ -43,7 +43,7 @@ def compute_H():
   t = np.linspace(t_min, t_max, N)
 
   # Timestamps: random strategy
-  #t = t_min + (t_max - t_min)*np.rand(N)
+  #t = t_min + (t_max - t_min)*rng.rand(N)
 
   # Generate parameters and data
   A, B, nu_true, y = generate(t)
