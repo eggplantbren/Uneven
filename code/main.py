@@ -48,9 +48,6 @@ def compute_H():
   # Generate parameters and data
   A, B, nu_true, y = generate(t)
 
-  plt.plot(t, y, 'bo')
-  plt.show()
-
   # Calculate the marginal posterior for log(nu) (flat prior)
   log_nu = np.linspace(np.log(nu_min), np.log(nu_max), 30001)
   nu = np.exp(log_nu)
@@ -84,14 +81,24 @@ def compute_H():
   # Calculate information
   H = np.trapz(p*(logp - np.log(1./(np.log(nu_max) - np.log(nu_min)))), x=log_nu)
 
+  plt.subplot(1, 2, 1)
+  plt.plot(t, y, 'bo')
+  plt.title('Data set')
+
+  plt.subplot(1, 2, 2)
   plt.plot(log_nu, p)
   plt.axvline(np.log(nu_true), color='r')
   plt.title('H = ' + str(H))
-  plt.show()
+  plt.title('Marginal posterior for $\\nu$')
+  plt.draw()
 
   return H
 
 if __name__ == '__main__':
+  plt.ion()
+  plt.figure(figsize=(12, 6))
+  plt.hold(False)
+
   # Monte Carlo estimate expected information (= mutual information)
   reps = 1000
   results = np.empty(reps)
@@ -101,4 +108,7 @@ if __name__ == '__main__':
 
     keep = results[0:(i+1)]
     print((i+1), keep.mean(), keep.std()/np.sqrt(i+1.))
+
+  plt.ioff()
+  plt.show()
 
