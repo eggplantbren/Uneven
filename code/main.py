@@ -1,9 +1,10 @@
 import numpy as np
 import numpy.random as rng
 import matplotlib.pyplot as plt
+import scipy.linalg as la
 
 # Number of data points
-N = 101
+N = 11
 
 # Standard deviation of measurement noise
 sigma = np.ones(N)
@@ -17,7 +18,7 @@ t_max = 100.
 
 # Limits for prior on frequency
 nu_min = 1./(t_max - t_min)
-nu_max = 1E3*nu_min
+nu_max = 1E2*nu_min
 
 def generate(t):
   """
@@ -47,6 +48,7 @@ if __name__ == '__main__':
 
   # Calculate the marginal posterior for nu
   nu = np.exp(np.linspace(np.log(nu_min), np.log(nu_max), 10001))
+  logp = np.zeros(nu.size)
 
   for i in xrange(0, len(nu)):
     # Model basis functions
@@ -63,9 +65,11 @@ if __name__ == '__main__':
     g[1, 0] = g[0, 1]
     g[1, 1] = (C*C).sum()
 
-    f = np.matrix(f).T
-    g = np.matrix(g)
+    g2 = g + np.eye(2)/delta**2
+    cho = la.cho_factor(g2) 
+    logp[i] = 0.5*np.dot(f, la.cho_solve(cho, f)) - np.sum(np.log(np.diag(cho[0])))
 
-    L = np.cholesky(g + np.eye(2)/delta**2) 
-
+  plt.plot(nu, np.exp(logp - logp.max()))
+  plt.title(nu_true)
+  plt.show()
 
