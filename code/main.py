@@ -18,7 +18,7 @@ t_max = 100.
 
 # Limits for prior on frequency
 nu_min = 1./(t_max - t_min)
-nu_max = nu_min*(0.5*N)
+nu_max = nu_min*N
 
 def generate(t):
   """
