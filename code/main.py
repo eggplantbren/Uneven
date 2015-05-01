@@ -10,7 +10,7 @@ N = 101
 sigma = np.ones(N)
 
 # Standard deviation of the prior for amplitudes
-delta = 2.
+delta = 1.
 
 # Time limits
 t_min = 0.
@@ -27,7 +27,7 @@ def generate(t):
   A, B = delta*rng.randn(2)
   nu = np.exp(np.log(nu_min) + np.log(nu_max/nu_min)*rng.rand())
 
-  y = A*np.sin(2.*np.pi*nu*t) + B*np.cos(2.*np.pi*nu*t) + sigma*rng.rand(len(t))
+  y = A*np.sin(2.*np.pi*nu*t) + B*np.cos(2.*np.pi*nu*t) + sigma*rng.randn(len(t))
 
   return [A, B, nu, y]
 
@@ -46,7 +46,7 @@ if __name__ == '__main__':
   plt.plot(t, y, 'bo')
   plt.show()
 
-  # Calculate the marginal posterior for nu
+  # Calculate the marginal posterior for log(nu) (flat prior)
   log_nu = np.linspace(np.log(nu_min), np.log(nu_max), 30001)
   nu = np.exp(log_nu)
   logp = np.zeros(nu.size)
@@ -70,7 +70,17 @@ if __name__ == '__main__':
     cho = la.cho_factor(g2) 
     logp[i] = 0.5*np.dot(f, la.cho_solve(cho, f)) - np.sum(np.log(np.diag(cho[0])))
 
-  plt.plot(log_nu, np.exp(logp - logp.max()))
+  # Normalise posterior
+  logp = logp - logp.max()
+  Z = np.trapz(np.exp(logp), x=log_nu)
+  p = np.exp(logp)/Z
+  logp -= np.log(Z)
+
+  # Calculate information
+  H = np.trapz(p*(logp - np.log(1./(np.log(nu_max) - np.log(nu_min)))), x=log_nu)
+
+  plt.plot(log_nu, p)
   plt.axvline(np.log(nu_true), color='r')
+  plt.title('H = ' + str(H))
   plt.show()
 
