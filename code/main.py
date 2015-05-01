@@ -83,20 +83,24 @@ def compute_H():
 
   plt.subplot(1, 2, 1)
   plt.plot(t, y, 'bo')
+  plt.xlabel('Time')
+  plt.ylabel('$y$')
   plt.title('Data set')
 
   plt.subplot(1, 2, 2)
   plt.plot(log_nu, p)
   plt.axvline(np.log(nu_true), color='r')
   plt.title('H = ' + str(H))
-  plt.title('Marginal posterior for $\\nu$')
+  plt.xlabel('$\\ln(\\nu)$')
+  plt.ylabel('Posterior density')
+  plt.title('Marginal posterior for $\\ln(\\nu)$')
   plt.draw()
 
   return H
 
 if __name__ == '__main__':
   plt.ion()
-  plt.figure(figsize=(12, 6))
+  plt.figure(figsize=(13, 6))
   plt.hold(False)
 
   # Monte Carlo estimate expected information (= mutual information)
