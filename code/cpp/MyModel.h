@@ -7,7 +7,15 @@
 class MyModel
 {
 	private:
+        // Dataset
+        static std::vector<double> t, y;
+        static void generate_data(DNest4::RNG& rng, size_t n=101);
 
+        // Sinusoid parameters
+        double A, P, phi;
+
+        // Latent parameters for fantasy data
+        std::vector<double> n;
 
 	public:
 		// Constructor only gives size of params
