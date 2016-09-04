@@ -14,6 +14,9 @@ for i in range(0, 10000):
 
     # Even grid
     data["t"] = np.linspace(0.0, 1.0, data["N"])
+    # Even grid results from 84 repetitions
+    # mean(information) = 10.528
+    # std(information)/sqrt(len(information)) = 0.323
 
     # Uneven grid
     # data["t"] = rng.rand(data["N"])
