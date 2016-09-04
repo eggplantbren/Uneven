@@ -14,14 +14,11 @@ for i in range(0, 10000):
 
     # Even grid
     data["t"] = np.linspace(0.0, 1.0, data["N"])
-    # Even grid results from 84 repetitions
-    # mean(information) = 10.528
-    # std(information)/sqrt(len(information)) = 0.323
 
     # Uneven grid
     # data["t"] = rng.rand(data["N"])
 
-    A, P, phi = 5*rng.randn(), rng.rand(), 2*np.pi*rng.rand()
+    A, P, phi = 5*rng.randn(), -0.05*np.log(rng.rand()), 2*np.pi*rng.rand()
     data["y"] = A*np.sin(2*np.pi*data["t"]/P + phi) + rng.randn(data["N"])
 
     # Create model
@@ -29,7 +26,7 @@ for i in range(0, 10000):
 
     # Sinusoid parameters
     model.add_node(bd.Node("A", bd.Normal(0.0, 5.0)))
-    model.add_node(bd.Node("P", bd.Uniform(0.0, 1.0)))
+    model.add_node(bd.Node("P", bd.Exponential(0.05)))
     model.add_node(bd.Node("phi", bd.Uniform(0.0, 2.0*np.pi)))
 
     # Data nodes
