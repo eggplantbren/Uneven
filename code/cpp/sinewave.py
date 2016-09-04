@@ -13,10 +13,17 @@ for i in range(0, 10000):
     data["N"] = 101
 
     # Even grid
-    data["t"] = np.linspace(0.0, 1.0, data["N"])
+    # data["t"] = np.linspace(0.0, 1.0, data["N"])
+
+    # Some even grid results
+    # len(information), mean(information), sem(information)
+    # 112, 11.827, 0.305
+
+    # Some uneven grid results
+    # 99, 13.586, 0.450
 
     # Uneven grid
-    # data["t"] = rng.rand(data["N"])
+    data["t"] = rng.rand(data["N"])
 
     A, P, phi = 5*rng.randn(), -0.05*np.log(rng.rand()), 2*np.pi*rng.rand()
     data["y"] = A*np.sin(2*np.pi*data["t"]/P + phi) + rng.randn(data["N"])
