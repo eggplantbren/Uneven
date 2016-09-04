@@ -11,7 +11,12 @@ for i in range(0, 10000):
     # Generate a dataset from the prior
     data = {}
     data["N"] = 101
+
+    # Even grid
     data["t"] = np.linspace(0.0, 1.0, data["N"])
+
+    # Uneven grid
+    # data["t"] = rng.rand(data["N"])
 
     A, P, phi = 5*rng.randn(), rng.rand(), 2*np.pi*rng.rand()
     data["y"] = A*np.sin(2*np.pi*data["t"]/P + phi) + rng.randn(data["N"])
